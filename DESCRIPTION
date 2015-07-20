@@ -1,7 +1,7 @@
 Package: nbconvertR
 Type: Package
 Title: Vignette Engine Wrapping IPython Notebooks
-Version: 1.0
+Version: 1.0.2
 Date: 2015-06-25
 Author: Philipp Angerer
 Maintainer: Philipp Angerer <philipp.angerer@helmholtz-muenchen.de>
@@ -14,5 +14,6 @@ License: GPL-3
 SystemRequirements:
   pandoc,
   ipython (>= 3.0) or jupyter,
-  ipython/jupyter notebook optional dependencies
+  ipython/jupyter notebook optional dependencies,
+  pywin32 (on windows)
 VignetteBuilder: nbconvertR
