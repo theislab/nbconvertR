@@ -29,7 +29,8 @@ it also understands \code{VignetteTemplate{<format>}{<filename>}}, which will pa
 }
 \examples{
 \dontrun{
- nbconvert('test-vignette.ipynbmeta', 'pdf')
+path <- system.file('doc/test-vignette.ipynbmeta', package = 'nbconvertR')
+nbconvert(path, 'pdf')
 }
 }
 
