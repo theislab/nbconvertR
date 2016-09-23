@@ -1,26 +1,5 @@
-metaext.re <- '[.]ipynbmeta$'
-templ.re <- '^\\s*%\\s*\\\\VignetteTemplate\\{([^}]+)\\}\\{([^}]+)\\}\\s*$'
-
-fail <- 'Either IPython 3+ or Jupyter has to be installed, but '
-
-
-command.success <- function(command, args = character(0))
-	suppressWarnings(system2(command, args, FALSE, FALSE)) == 0
-
-
-get.binary <- function() {
-	if (command.success('jupyter', c('nbconvert', '--help'))) {
-		'jupyter'
-	} else if (command.success('ipython', c('nbconvert', '--help'))) {
-		ipython.version.str <- system2('ipython', '--version', TRUE)
-		ipython.version <- as.integer(strsplit(ipython.version.str, '.', TRUE)[[1]])
-		if (ipython.version[[1]] < 3L)
-			stop(fail, 'found IPython ', ipython.version.str)
-		
-		'ipython'
-	} else stop(fail, 'neither could be called.')
-}
-
+metaext_re <- '[.]ipynbmeta$'
+templ_re <- '^\\s*%\\s*\\\\VignetteTemplate\\{([^}]+)\\}\\{([^}]+)\\}\\s*$'
 
 #' Jupyter/IPython Notebook Conversion
 #' 
@@ -53,26 +32,24 @@ nbconvert <- function(
 	ext <- switch(fmt, html = '.html', latex = '.tex', markdown = '.md',
 	              pdf = '.pdf', rst = '.rst', script = '.r', slides = '.slides.html')
 	
-	template.lines <- grep(templ.re, readLines(file), value = TRUE)
-	templates <- structure(sub(templ.re, '\\2', template.lines), names = sub(templ.re, '\\1', template.lines))
+	template_lines <- grep(templ_re, readLines(file), value = TRUE)
+	templates <- structure(sub(templ_re, '\\2', template_lines), names = sub(templ_re, '\\1', template_lines))
 	
-	ipynb.file <- sub(metaext.re, '.ipynb', file)
+	ipynb_file <- sub(metaext_re, '.ipynb', file)
 	
-	binary <- get.binary()
-	
-	template.args <- character(0L)
+	template_args <- character(0L)
 	if (fmt %in% names(templates)) {
-		template.args <- c('--template', templates[[fmt]])
+		template_args <- c('--template', templates[[fmt]])
 	}
-	args <- c('nbconvert', template.args, '--to', fmt, ipynb.file)
+	args <- c('nbconvert', template_args, '--to', fmt, ipynb_file)
 	
 	output <- if (quiet) FALSE else ''
 	
-	ret <- system2(binary, args, output, output, wait = TRUE)
+	ret <- system2('jupyter', args, output, output, wait = TRUE)
 	
-	if (ret != 0) stop(sprintf('The call %s failed with exit status %s', dQuote(paste(shQuote(c(binary, args)), collapse = ' ')), ret))
+	if (ret != 0) stop(sprintf('The call %s failed with exit status %s', dQuote(paste(shQuote(c('jupyter', args)), collapse = ' ')), ret))
 	
-	filename <- sub(metaext.re, ext, basename(file))
+	filename <- sub(metaext_re, ext, basename(file))
 	file.path(getwd(), filename)
 }
 
@@ -81,6 +58,6 @@ nbconvert <- function(
 		'nbconvert',
 		weave  = function(file, ...) nbconvert(file, 'latex',  ...),
 		tangle = function(file, ...) nbconvert(file, 'script', ...),
-		pattern = metaext.re,
+		pattern = metaext_re,
 		package = 'nbconvertR')
 }
