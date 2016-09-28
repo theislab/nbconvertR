@@ -5,8 +5,12 @@ metaext_re <- '[.]ipynbmeta$'
 #' An R interface for using Jupyter/IPython system calls to convert .ipynb notebooks unsing meta information.
 #' When passed "<filename>.ipynbmeta" it will convert "<filename>.ipynb" to "<filename>.<ext>".
 #' 
-#' Apart from the standard \code{VignetteIndexEntry{<name>}} and \code{VignetteEngine{<namespace>::<name>}} directives,
-#' it also understands \code{VignetteTemplate{<format>}{<filename>}}, which will pass a \code{--template} parameter to \code{nbconvert}
+#' Apart from the standard \code{\%\\VignetteIndexEntry{<name>}} and \code{\%\\VignetteEngine{<namespace>::<name>}} directives,
+#' it also understands:
+#' \enumerate{
+#' \item{\code{\%\\VignetteTemplate{<format>}{<filename>}}}{, which will pass a \code{--template} parameter to \code{nbconvert}}
+#' \item{\code{\%\\VignettePreprocessors{<module>.<Preproc>[, ...]}}}{, which will pass \code{--Exporter.preprocessors=["<module>.<Preproc>",...]}.}
+#' }
 #' 
 #' @param file   A file with a .ipynbmeta extension that contains vignette metadata lines
 #' @param fmt    A format supported by \code{nbconvert}. "script" will create an .r file, and "slides" a reveal.js-powered html presentation.
@@ -38,6 +42,7 @@ nbconvert <- function(
 	args <- c(
 		'nbconvert',
 		args_template(lines, fmt),
+		args_preprocessors(lines),
 		'--to', fmt,
 		ipynb_file)
 	

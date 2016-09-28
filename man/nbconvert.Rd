@@ -24,8 +24,12 @@ An R interface for using Jupyter/IPython system calls to convert .ipynb notebook
 When passed "<filename>.ipynbmeta" it will convert "<filename>.ipynb" to "<filename>.<ext>".
 }
 \details{
-Apart from the standard \code{VignetteIndexEntry{<name>}} and \code{VignetteEngine{<namespace>::<name>}} directives,
-it also understands \code{VignetteTemplate{<format>}{<filename>}}, which will pass a \code{--template} parameter to \code{nbconvert}
+Apart from the standard \code{\%\\VignetteIndexEntry{<name>}} and \code{\%\\VignetteEngine{<namespace>::<name>}} directives,
+it also understands:
+\enumerate{
+\item{\code{\%\\VignetteTemplate{<format>}{<filename>}}}{, which will pass a \code{--template} parameter to \code{nbconvert}}
+\item{\code{\%\\VignettePreprocessors{<module>.<Preproc>[, ...]}}}{, which will pass \code{--Exporter.preprocessors=["<module>.<Preproc>",...]}.}
+}
 }
 \examples{
 \dontrun{
