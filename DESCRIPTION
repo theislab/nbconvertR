@@ -1,15 +1,15 @@
 Package: nbconvertR
 Type: Package
 Title: Vignette Engine wrapping Jupyter Notebooks
-Version: 1.0.2
+Version: 1.1.0
 Date: 2015-06-25
 Author: Philipp Angerer
 Maintainer: Philipp Angerer <philipp.angerer@helmholtz-muenchen.de>
 Description:
 	Calls the 'Jupyter' script 'nbconvert' to create vignettes from
   notebooks. Those notebooks ('.ipynb' files) are files containing rich text,
-  code, and its output. Code cells can be edited and evaluated interactively. See
-  <https://jupyter.org/> for more information.
+  code, and its output. Code cells can be edited and evaluated interactively.
+  See <https://jupyter.org/> for more information.
 License: GPL-3
 SystemRequirements:
 	pandoc,

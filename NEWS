@@ -1,11 +1,19 @@
-miniCRAN v1.0.2 (Release date: 2014-08-18)
+nbconvertR v1.1.0 (Release date: 2015-09-28)
 ==============
 
 Changes:
 
-* More speccific errors if something goes wrong
+* Depend on Jupyter
+* Added `\VignettePreprocessors{foo.Bar,...}`
 
-miniCRAN v1.0.1 (Release date: 2015-07-08)
+nbconvertR v1.0.2 (Release date: 2015-07-20)
+==============
+
+Changes:
+
+* More specific errors if something goes wrong
+
+nbconvertR v1.0.1 (Release date: 2015-07-08)
 ==============
 
 Changes:
