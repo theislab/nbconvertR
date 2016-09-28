@@ -1,3 +1,10 @@
+nbconvertR v1.1.1 (Release date: 2015-09-28)
+==============
+
+Changes:
+
+* Hotfix: changed `\VignettePreprocessors{foo.Bar,...}` to `\VignettePreprocessors{<format>}{foo.Bar,...}`
+
 nbconvertR v1.1.0 (Release date: 2015-09-28)
 ==============
 
