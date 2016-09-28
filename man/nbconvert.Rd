@@ -28,7 +28,7 @@ Apart from the standard \code{\%\\VignetteIndexEntry{<name>}} and \code{\%\\Vign
 it also understands:
 \enumerate{
 \item{\code{\%\\VignetteTemplate{<format>}{<filename>}}}{, which will pass a \code{--template} parameter to \code{nbconvert}}
-\item{\code{\%\\VignettePreprocessors{<module>.<Preproc>[, ...]}}}{, which will pass \code{--Exporter.preprocessors=["<module>.<Preproc>",...]}.}
+\item{\code{\%\\VignettePreprocessors{<format>}{<module>.<Preproc>[, ...]}}}{, which will pass \code{--<Format>Exporter.preprocessors=["<module>.<Preproc>",...]} to \code{nbconvert}.}
 }
 }
 \examples{

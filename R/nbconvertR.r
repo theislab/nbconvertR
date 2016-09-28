@@ -9,7 +9,7 @@ metaext_re <- '[.]ipynbmeta$'
 #' it also understands:
 #' \enumerate{
 #' \item{\code{\%\\VignetteTemplate{<format>}{<filename>}}}{, which will pass a \code{--template} parameter to \code{nbconvert}}
-#' \item{\code{\%\\VignettePreprocessors{<module>.<Preproc>[, ...]}}}{, which will pass \code{--Exporter.preprocessors=["<module>.<Preproc>",...]}.}
+#' \item{\code{\%\\VignettePreprocessors{<format>}{<module>.<Preproc>[, ...]}}}{, which will pass \code{--<Format>Exporter.preprocessors=["<module>.<Preproc>",...]} to \code{nbconvert}.}
 #' }
 #' 
 #' @param file   A file with a .ipynbmeta extension that contains vignette metadata lines
@@ -32,8 +32,9 @@ nbconvert <- function(
 	...) {
 	
 	fmt <- match.arg(fmt)
-	ext <- switch(fmt, html = '.html', latex = '.tex', markdown = '.md',
-	              pdf = '.pdf', rst = '.rst', script = '.r', slides = '.slides.html')
+	ext <- switch(
+		fmt, html = '.html', latex = '.tex', markdown = '.md',
+		pdf = '.pdf', rst = '.rst', script = '.r', slides = '.slides.html')
 	
 	lines <- readLines(file)
 	
@@ -42,15 +43,17 @@ nbconvert <- function(
 	args <- c(
 		'nbconvert',
 		args_template(lines, fmt),
-		args_preprocessors(lines),
+		args_preprocessors(lines, fmt),
 		'--to', fmt,
 		ipynb_file)
 	
 	output <- if (quiet) FALSE else ''
 	
-	ret <- system2('jupyter', args, output, output, wait = TRUE)
+	# allow preprocessors to be imported from the vignette dir and current dir
+	pythonpath <- file.path('PYTHONPATH=.', dirname(file), Sys.getenv('PYTHONPATH'), fsep = .Platform$path.sep)
+	ret <- system2('jupyter', shQuote(args), output, output, wait = TRUE, env = pythonpath)
 	
-	if (ret != 0) stop(sprintf('The call %s failed with exit status %s', dQuote(paste(shQuote(c('jupyter', args)), collapse = ' ')), ret))
+	if (ret != 0) stop(sprintf('The call %s failed with exit status %s', dQuote(paste(pythonpath, 'jupyter', paste(shQuote(args), collapse = ' '))), ret))
 	
 	filename <- sub(metaext_re, ext, basename(file))
 	file.path(getwd(), filename)

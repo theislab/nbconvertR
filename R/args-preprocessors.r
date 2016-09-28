@@ -1,12 +1,18 @@
-preprocessors_re <- '^\\s*%\\s*\\\\VignettePreprocessors\\{\\s*([^}]+?)\\s*\\}\\s*$'
+preprocessors_re <- '^\\s*%%\\s*\\\\VignettePreprocessors\\{%s\\}\\{\\s*([^}]+?)\\s*\\}\\s*$'
 
-args_preprocessors <- function(lines) {
-	preprocessors_lines <- grep(preprocessors_re, lines, value = TRUE)
+args_preprocessors <- function(lines, fmt) {
+	kind <- switch(
+		fmt, html = 'HTML', latex = 'Latex', markdown = 'Markdown',
+		pdf = 'PDF', rst = 'RST', script = 'Script', slides = 'Slides')
+	
+	re <- sprintf(preprocessors_re, fmt)
+	
+	preprocessors_lines <- grep(re, lines, value = TRUE)
 	preprocessors <- unlist(lapply(
-		sub(preprocessors_re, '\\1', preprocessors_lines),
+		sub(re, '\\1', preprocessors_lines),
 		function(pps) strsplit(pps, '\\s*,\\s*')))
 	
 	if (length(preprocessors) > 0L) {
-		sprintf('--Exporter.preprocessors=["%s"]', paste(preprocessors, collapse = '","'))
+		sprintf('--%sExporter.preprocessors=["%s"]', kind, paste(preprocessors, collapse = '","'))
 	} else character(0L)
 }
