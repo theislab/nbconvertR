@@ -1,5 +1,4 @@
 metaext_re <- '[.]ipynbmeta$'
-templ_re <- '^\\s*%\\s*\\\\VignetteTemplate\\{([^}]+)\\}\\{([^}]+)\\}\\s*$'
 
 #' Jupyter/IPython Notebook Conversion
 #' 
@@ -32,16 +31,15 @@ nbconvert <- function(
 	ext <- switch(fmt, html = '.html', latex = '.tex', markdown = '.md',
 	              pdf = '.pdf', rst = '.rst', script = '.r', slides = '.slides.html')
 	
-	template_lines <- grep(templ_re, readLines(file), value = TRUE)
-	templates <- structure(sub(templ_re, '\\2', template_lines), names = sub(templ_re, '\\1', template_lines))
+	lines <- readLines(file)
 	
 	ipynb_file <- sub(metaext_re, '.ipynb', file)
 	
-	template_args <- character(0L)
-	if (fmt %in% names(templates)) {
-		template_args <- c('--template', templates[[fmt]])
-	}
-	args <- c('nbconvert', template_args, '--to', fmt, ipynb_file)
+	args <- c(
+		'nbconvert',
+		args_template(lines, fmt),
+		'--to', fmt,
+		ipynb_file)
 	
 	output <- if (quiet) FALSE else ''
 	
