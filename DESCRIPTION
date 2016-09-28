@@ -18,3 +18,4 @@ SystemRequirements:
   pywin32 (on windows)
 VignetteBuilder: nbconvertR
 RoxygenNote: 5.0.1
+Suggests: testthat
