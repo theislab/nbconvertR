@@ -17,5 +17,5 @@ SystemRequirements:
   jupyter nbconvert ("nbconvert" python package),
   pywin32 (on windows)
 VignetteBuilder: nbconvertR
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 Suggests: testthat

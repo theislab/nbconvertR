@@ -38,4 +38,3 @@ nbconvert(path, 'pdf')
 }
 
 }
-
