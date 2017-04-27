@@ -5,14 +5,14 @@
 \title{Jupyter/IPython Notebook Conversion}
 \usage{
 nbconvert(file, fmt = c("html", "latex", "markdown", "pdf", "rst", "script",
-  "slides"), quiet = FALSE, ...)
+  "slides"), quiet = TRUE, ...)
 }
 \arguments{
 \item{file}{A file with a .ipynbmeta extension that contains vignette metadata lines}
 
 \item{fmt}{A format supported by \code{nbconvert}. "script" will create an .r file, and "slides" a reveal.js-powered html presentation.}
 
-\item{quiet}{Suppress command output if TRUE}
+\item{quiet}{Suppress command output if TRUE (the output will always be shown on error)}
 
 \item{...}{Ignored for now}
 }

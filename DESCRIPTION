@@ -1,8 +1,8 @@
 Package: nbconvertR
 Type: Package
 Title: Vignette Engine Wrapping Jupyter Notebooks
-Version: 1.1.3
-Date: 2016-10-04
+Version: 1.2.0
+Date: 2017-04-27
 Author: Philipp Angerer
 Maintainer: Philipp Angerer <philipp.angerer@helmholtz-muenchen.de>
 Description:

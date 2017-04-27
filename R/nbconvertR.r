@@ -14,7 +14,7 @@ metaext_re <- '[.]ipynbmeta$'
 #' 
 #' @param file   A file with a .ipynbmeta extension that contains vignette metadata lines
 #' @param fmt    A format supported by \code{nbconvert}. "script" will create an .r file, and "slides" a reveal.js-powered html presentation.
-#' @param quiet  Suppress command output if TRUE
+#' @param quiet  Suppress command output if TRUE (the output will always be shown on error)
 #' @param ...    Ignored for now
 #' @return  The filename of the resulting document, script or presentation
 #' 
@@ -28,7 +28,7 @@ nbconvert <- function(
 	file,
 	fmt = c('html', 'latex', 'markdown', 'pdf', 'rst', 'script', 'slides'),
 	#encoding = 'UTF-8',
-	quiet = FALSE,
+	quiet = TRUE,
 	...) {
 	
 	fmt <- match.arg(fmt)
@@ -47,13 +47,19 @@ nbconvert <- function(
 		'--to', fmt,
 		ipynb_file)
 	
-	output <- if (quiet) FALSE else ''
-	
 	# allow preprocessors to be imported from the vignette dir and current dir
 	pythonpath <- file.path('PYTHONPATH=.', dirname(file), Sys.getenv('PYTHONPATH'), fsep = .Platform$path.sep)
-	ret <- system2('jupyter', shQuote(args), output, output, wait = TRUE, env = pythonpath)
+	# if !quiet, the command will directly write to stdout/err
+	r <- system3('jupyter', args, quiet, env = pythonpath)
 	
-	if (ret != 0) stop(sprintf('The call %s failed with exit status %s', dQuote(paste(pythonpath, 'jupyter', paste(shQuote(args), collapse = ' '))), ret))
+	if (r$code != 0) {
+		call <- paste(pythonpath, 'jupyter', paste(shQuote(args), collapse = ' '))
+		msg <- sprintf('The call %s failed with exit status %s', dQuote(call), r$code)
+		if (!is.na(r$msg)) msg <- paste0(msg, ', errmsg ', r$msg)
+		# we want to see the output if something bad happened
+		if (quiet) stop(msg, ' and output:\n', paste(r$out, collapse = '\n'))
+		else stop(msg)
+	}
 	
 	filename <- sub(metaext_re, ext, basename(file))
 	file.path(getwd(), filename)
