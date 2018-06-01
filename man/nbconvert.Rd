@@ -2,10 +2,25 @@
 % Please edit documentation in R/nbconvertR.r
 \name{nbconvert}
 \alias{nbconvert}
+\alias{nbconvert_html}
+\alias{nbconvert_latex}
+\alias{nbconvert_markdown}
+\alias{nbconvert_pdf}
+\alias{nbconvert_rst}
+\alias{nbconvert_script}
+\alias{nbconvert_slides}
 \title{Jupyter/IPython Notebook Conversion}
 \usage{
 nbconvert(file, fmt = c("html", "latex", "markdown", "pdf", "rst", "script",
   "slides"), quiet = TRUE, ...)
+
+nbconvert_html(file, quiet = TRUE, ...)
+nbconvert_latex(file, quiet = TRUE, ...)
+nbconvert_markdown(file, quiet = TRUE, ...)
+nbconvert_pdf(file, quiet = TRUE, ...)
+nbconvert_rst(file, quiet = TRUE, ...)
+nbconvert_script(file, quiet = TRUE, ...)
+nbconvert_slides(file, quiet = TRUE, ...)
 }
 \arguments{
 \item{file}{A file with a .ipynbmeta extension that contains vignette metadata lines}

@@ -55,21 +55,42 @@ nbconvert <- function(
 	if (r$code != 0) {
 		call <- paste(pythonpath, 'jupyter', paste(shQuote(args), collapse = ' '))
 		msg <- sprintf('The call %s failed with exit status %s', dQuote(call), r$code)
-		if (!is.na(r$msg)) msg <- paste0(msg, ', errmsg ', r$msg)
-		# we want to see the output if something bad happened
-		if (quiet) stop(msg, ' and output:\n', paste(r$out, collapse = '\n'))
-		else stop(msg)
+		if (!is.na(r$msg)) msg <- paste(msg, 'and errmsg', r$msg)
+		if (quiet) writeLines(c('Call failed. Output:', r$out), stderr())
+		stop(msg)
 	}
 	
 	filename <- sub(metaext_re, ext, basename(file))
 	file.path(getwd(), filename)
 }
 
+formats <- eval(formals(nbconvert)$fmt)
+
+#' @eval paste0('@aliases ', paste(paste0('nbconvert_', formats), collapse = '\n'))
+#' @eval paste0('@usage\n', paste(sprintf('nbconvert_%s(file, quiet = TRUE, ...)', formats), collapse = '\n'))
+#' @evalNamespace paste(sprintf('export(nbconvert_%s)', formats), collapse = '\n')
+#' @name nbconvert
+lapply(formats, function(fmt) assign(
+		paste0('nbconvert_', fmt),
+		function(file, quiet = TRUE, ...) nbconvert(file, fmt, quiet, ...),
+		environment(nbconvert)))
+
+
 .onLoad = function(libname, pkgname) {
 	tools::vignetteEngine(
 		'nbconvert',
-		weave  = function(file, ...) nbconvert(file, 'latex',  ...),
-		tangle = function(file, ...) nbconvert(file, 'script', ...),
+		weave  = nbconvert_latex,
+		tangle = nbconvert_script,
 		pattern = metaext_re,
 		package = 'nbconvertR')
+	
+	for (fmt in formats) {
+		name <- paste0('nbconvert_', fmt)
+		tools::vignetteEngine(
+			name,
+			weave  = get(name, environment(nbconvert)),
+			tangle = nbconvert_script,
+			pattern = metaext_re,
+			package = 'nbconvertR')
+	}
 }

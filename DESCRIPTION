@@ -1,7 +1,7 @@
 Package: nbconvertR
 Type: Package
 Title: Vignette Engine Wrapping Jupyter Notebooks
-Version: 1.2.0
+Version: 1.3.0
 Date: 2017-04-27
 Author: Philipp Angerer
 Maintainer: Philipp Angerer <philipp.angerer@helmholtz-muenchen.de>
@@ -17,5 +17,6 @@ SystemRequirements:
   jupyter nbconvert ("nbconvert" python package),
   pywin32 (on windows)
 VignetteBuilder: nbconvertR
-RoxygenNote: 6.0.1
+Encoding: UTF-8
+RoxygenNote: 6.0.1.9000
 Suggests: testthat
