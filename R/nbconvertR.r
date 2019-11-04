@@ -55,8 +55,18 @@ nbconvert <- function(
 	if (r$code != 0) {
 		call <- paste(pythonpath, 'jupyter', paste(shQuote(args), collapse = ' '))
 		msg <- sprintf('The call %s failed with exit status %s', dQuote(call), r$code)
-		if (!is.na(r$msg)) msg <- paste(msg, 'and errmsg', r$msg)
-		if (quiet) writeLines(c('Call failed. Output:', r$out), stderr())
+		if (!is.na(r$msg)) msg <- paste0(msg, 'and errmsg ', r$msg)
+		# we want to see the output if something bad happened
+		max_len <- 8170L
+		options(warning.length = max_len)
+		
+		if (quiet) {
+			prefix <- paste(msg, 'Call failed. Output:\n')
+			output <- paste(r$out, collapse = '\n')
+			msg <-
+				if (nchar(prefix) + nchar(output) <= max_len) paste0(prefix, output)
+				else paste0(prefix, '[...]', substring(output, nchar(output) - max_len - 5L))
+		}
 		stop(msg)
 	}
 	
