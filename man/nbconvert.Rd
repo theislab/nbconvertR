@@ -11,8 +11,12 @@
 \alias{nbconvert_slides}
 \title{Jupyter/IPython Notebook Conversion}
 \usage{
-nbconvert(file, fmt = c("html", "latex", "markdown", "pdf", "rst",
-  "script", "slides"), quiet = TRUE, ...)
+nbconvert(
+  file,
+  fmt = c("html", "latex", "markdown", "pdf", "rst", "script", "slides"),
+  quiet = TRUE,
+  ...
+)
 
 nbconvert_html(file, quiet = TRUE, ...)
 nbconvert_latex(file, quiet = TRUE, ...)

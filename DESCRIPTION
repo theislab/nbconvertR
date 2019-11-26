@@ -17,5 +17,5 @@ SystemRequirements:
   jupyter nbconvert ("nbconvert" python package),
   pywin32 (on windows)
 Encoding: UTF-8
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.0
 Suggests: testthat
