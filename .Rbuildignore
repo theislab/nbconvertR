@@ -2,3 +2,5 @@
 ^\.Rproj\.user$
 \.ipynb_checkpoints$
 ^vignettes/.*\.(aux|out|log|tex|pdf)$
+^\.travis\.yml$
+^appveyor\.yml$

@@ -1,6 +1,11 @@
 nbconvertR
 ==========
 
+<!-- badges: start -->
+[![Travis build status](https://travis-ci.com/theislab/nbconvertR.svg?branch=master)](https://travis-ci.com/theislab/nbconvertR)
+[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/theislab/nbconvertR?branch=master&svg=true)](https://ci.appveyor.com/project/theislab/nbconvertR)
+<!-- badges: end -->
+
 A small shim to use [`jupyter`][jupyter]’s [`nbconvert`][nbconvert] as [vignette engine][] and Jupyter notebooks as vignette sources.
 
 To get started, create a notebook in the `vignettes/` directory of your package, and a `.ipynbmeta` file of the same name next to it.
