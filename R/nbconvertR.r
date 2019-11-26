@@ -50,7 +50,7 @@ nbconvert <- function(
 	# allow preprocessors to be imported from the vignette dir and current dir
 	pythonpath <- file.path('PYTHONPATH=.', dirname(file), Sys.getenv('PYTHONPATH'), fsep = .Platform$path.sep)
 	# if !quiet, the command will directly write to stdout/err
-	r <- system3('jupyter', args, quiet, env = pythonpath)
+	r <- system3('jupyter', args, capture = quiet, env = pythonpath)
 	
 	if (r$code != 0) {
 		call <- paste(pythonpath, 'jupyter', paste(shQuote(args), collapse = ' '))

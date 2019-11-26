@@ -8,7 +8,8 @@ init:
         Import-Module '..\appveyor-tool.ps1'
 
 install:
-  ps: Bootstrap
+  - ps: Bootstrap
+  - "SET PATH=C:\\Python38-x64;C:\\Python38-x64\\Scripts;%PATH%"
 
 cache:
   - C:\RLibrary
@@ -24,6 +25,7 @@ environment:
 
 build_script:
   - travis-tool.sh install_deps
+  - python -m pip install jupyter nbconvert
 
 test_script:
   - travis-tool.sh run_tests
