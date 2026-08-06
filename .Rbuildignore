@@ -1,5 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 \.ipynb_checkpoints$
-^\.travis\.yml$
-^appveyor\.yml$
+^\.vscode$
+^\.pixi$
+^pixi\.(toml|lock)$
+^\.lintr$

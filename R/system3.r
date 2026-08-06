@@ -1,13 +1,13 @@
 system3 <- function(command, args = character(), ..., capture = FALSE, env = character()) {
 	stopifnot(is.logical(capture) && length(capture) == 1L)
-	
+
 	carg <- if (capture) TRUE else ''
 	if (length(env) > 0 && .Platform$OS.type == 'windows') {
 		env <- character()
 		warning('Ignoring env argument, as R does not support it on windows')
 	}
 	r <- system2('jupyter', shQuote(args), carg, carg, wait = TRUE, env = env, ...)
-	
+
 	if (capture) {
 		out <- r
 		code <- attr(out, 'status')
@@ -20,6 +20,6 @@ system3 <- function(command, args = character(), ..., capture = FALSE, env = cha
 		code <- r
 		msg <- NA_character_
 	}
-	
+
 	list(out = out, code = code, msg = msg)
 }
