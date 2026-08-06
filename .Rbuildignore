@@ -1,6 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 \.ipynb_checkpoints$
+^\.github$
 ^\.vscode$
 ^\.pixi$
 ^pixi\.(toml|lock)$

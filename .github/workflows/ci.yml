@@ -1,0 +1,114 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  # LaTeX packages needed by nbconvert’s article template
+  TEX_PACKAGES: >-
+    adjustbox bookmark booktabs caption collectbox enumitem environ etoolbox
+    eurosym fancyvrb float geometry hyperref iftex jknapltx parskip pdfcol pgf
+    rsfs soul tcolorbox titling trimspaces ucs ulem upquote xcolor
+
+jobs:
+  check:
+    name: check (${{ matrix.config.os }}, R ${{ matrix.config.r }})
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - {os: ubuntu-latest, r: 'devel', http-user-agent: 'release'}
+          - {os: ubuntu-latest, r: 'release'}
+          - {os: ubuntu-latest, r: 'oldrel-1'}
+          - {os: macos-latest, r: 'release'}
+          - {os: windows-latest, r: 'release'}
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.x'
+      - name: Install nbconvert
+        run: python -m pip install --upgrade jupyter nbconvert
+
+      - uses: r-lib/actions/setup-tinytex@v2
+      - name: Install LaTeX packages
+        shell: bash
+        run: tlmgr install $TEX_PACKAGES
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: ${{ matrix.config.r }}
+          http-user-agent: ${{ matrix.config.http-user-agent }}
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::rcmdcheck
+          needs: check
+
+      - uses: r-lib/actions/check-r-package@v2
+        with:
+          upload-snapshots: true
+
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      NOT_CRAN: true
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.x'
+      - name: Install nbconvert
+        run: python -m pip install --upgrade jupyter nbconvert
+
+      - uses: r-lib/actions/setup-tinytex@v2
+      - name: Install LaTeX packages
+        run: tlmgr install $TEX_PACKAGES
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::testthat, local::.
+          needs: test
+
+      - name: Run tests
+        run: testthat::test_local(reporter = 'progress')
+        shell: Rscript {0}
+
+  all-green:
+    name: all green
+    if: always()
+    needs: [check, test]
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: Merge check & test results into one status
+        uses: re-actors/alls-green@release/v1
+        with:
+          jobs: ${{ toJSON(needs) }}
