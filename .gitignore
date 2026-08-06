@@ -1,3 +1,6 @@
-.Rproj.user
-.Rhistory
-.RData
+/.Rproj.user
+/.Rhistory
+/.RData
+/.pixi/*
+/pixi.lock
+!/.pixi/config.toml

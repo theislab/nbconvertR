@@ -1,0 +1,6 @@
+{
+    "r.rpath.linux": "${workspaceFolder}/.pixi/envs/default/bin/R",
+    "r.rpath.mac": "${workspaceFolder}/.pixi/envs/default/bin/R",
+    "python-envs.defaultEnvManager": "renan-r-santos.pixi-code:pixi",
+    "python-envs.defaultPackageManager": "renan-r-santos.pixi-code:pixi",
+}

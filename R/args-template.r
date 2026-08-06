@@ -6,8 +6,8 @@ args_template <- function(lines, fmt) {
 	templates <- setNames(
 		sub(template_re, '\\2', template_lines),
 		sub(template_re, '\\1', template_lines))
-	
-	if (fmt %in% names(templates)) {
+
+	if (fmt %in% names(templates))
 		c('--template', templates[[fmt]])
-	} else character(0L)
+	else character(0L)
 }
