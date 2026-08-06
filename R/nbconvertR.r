@@ -80,7 +80,7 @@ lapply(formats, function(fmt) {
 .onLoad <- function(libname, pkgname) {
 	tools::vignetteEngine(
 		'nbconvert',
-		weave  = nbconvert_latex, # nolint: object_usage_linter.
+		weave  = nbconvert_pdf, # nolint: object_usage_linter.
 		tangle = nbconvert_script, # nolint: object_usage_linter.
 		pattern = metaext_re,
 		package = 'nbconvertR')
