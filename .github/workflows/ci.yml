@@ -13,14 +13,8 @@ concurrency:
 permissions:
   contents: read
 
-env:
-  # LaTeX packages needed by nbconvert’s article template
-  TEX_PACKAGES: >-
-    adjustbox bookmark booktabs caption collectbox enumitem environ etoolbox
-    eurosym fancyvrb float geometry hyperref iftex jknapltx parskip pdfcol pgf
-    rsfs soul tcolorbox titling trimspaces ucs ulem upquote xcolor
-
 jobs:
+  # check-r-package runs tests but without LaTeX installed (that’s tested below in the test job)
   check:
     name: check (${{ matrix.config.os }}, R ${{ matrix.config.r }})
     runs-on: ${{ matrix.config.os }}
@@ -46,11 +40,6 @@ jobs:
           python-version: '3.x'
       - name: Install nbconvert
         run: python -m pip install --upgrade jupyter nbconvert
-
-      - uses: r-lib/actions/setup-tinytex@v2
-      - name: Install LaTeX packages
-        shell: bash
-        run: tlmgr install $TEX_PACKAGES
 
       - uses: r-lib/actions/setup-r@v2
         with:
@@ -84,9 +73,15 @@ jobs:
       - name: Install nbconvert
         run: python -m pip install --upgrade jupyter nbconvert
 
-      - uses: r-lib/actions/setup-tinytex@v2
-      - name: Install LaTeX packages
-        run: tlmgr install $TEX_PACKAGES
+      - name: Install LaTeX
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            texinfo \
+            texlive-xetex \
+            texlive-latex-extra \
+            texlive-fonts-recommended \
+            texlive-plain-generic
 
       - uses: r-lib/actions/setup-r@v2
         with:
@@ -97,8 +92,10 @@ jobs:
           extra-packages: any::testthat, local::.
           needs: test
 
+      # load_package = 'installed' matches how R CMD check runs the suite, so
+      # the vignette engine registered in .onLoad() is found the same way.
       - name: Run tests
-        run: testthat::test_local(reporter = 'progress')
+        run: testthat::test_local(load_package = 'installed', reporter = 'progress')
         shell: Rscript {0}
 
   all-green:
