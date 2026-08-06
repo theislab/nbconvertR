@@ -1,8 +1,6 @@
-.Rproj.user
-.Rhistory
-.RData
-vignettes/*.aux
-vignettes/*.out
-vignettes/*.log
-vignettes/*.tex
-vignettes/*.pdf
+/.Rproj.user
+/.Rhistory
+/.RData
+/.pixi/*
+/pixi.lock
+!/.pixi/config.toml

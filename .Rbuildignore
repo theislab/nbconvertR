@@ -1,4 +1,8 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 \.ipynb_checkpoints$
-^vignettes/.*\.(aux|out|log|tex|pdf)$
+^\.github$
+^\.vscode$
+^\.pixi$
+^pixi\.(toml|lock)$
+^\.lintr$

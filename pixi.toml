@@ -1,0 +1,36 @@
+[workspace]
+channels = ["conda-forge"]
+name = "nbconvertR"
+platforms = ["osx-arm64", "win-64", "linux-64"]
+
+[tasks]
+
+[target.osx-arm64.dependencies]
+r-base = ">=4.5.3,<4.6"
+pandoc = ">=3.10.1,<4"
+jupyter = ">=1.1.1,<2"
+nbconvert = ">=7.17.1,<8"
+r-jsonlite = ">=2.0.0,<3"
+r-languageserver = ">=0.3.18,<0.4"
+r-devtools = ">=2.5.0,<3"
+r-roxygen2 = ">=8.0.0,<9"
+
+[target.win-64.dependencies]
+r-base = ">=4.5.3,<4.6"
+pandoc = ">=3.10.1,<4"
+jupyter = ">=1.1.1,<2"
+nbconvert = ">=7.17.1,<8"
+r-jsonlite = ">=2.0.0,<3"
+r-languageserver = ">=0.3.18,<0.4"
+r-devtools = ">=2.5.0,<3"
+r-roxygen2 = ">=8.0.0,<9"
+
+[target.linux-64.dependencies]
+r-base = ">=4.5.3,<4.6"
+pandoc = ">=3.10.1,<4"
+jupyter = ">=1.1.1,<2"
+nbconvert = ">=7.17.1,<8"
+r-jsonlite = ">=2.0.0,<3"
+r-languageserver = ">=0.3.18,<0.4"
+r-devtools = ">=2.5.0,<3"
+r-roxygen2 = ">=8.0.0,<9"

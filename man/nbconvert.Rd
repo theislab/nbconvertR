@@ -11,8 +11,12 @@
 \alias{nbconvert_slides}
 \title{Jupyter/IPython Notebook Conversion}
 \usage{
-nbconvert(file, fmt = c("html", "latex", "markdown", "pdf", "rst", "script",
-  "slides"), quiet = TRUE, ...)
+nbconvert(
+  file,
+  fmt = c("html", "latex", "markdown", "pdf", "rst", "script", "slides"),
+  quiet = TRUE,
+  ...
+)
 
 nbconvert_html(file, quiet = TRUE, ...)
 nbconvert_latex(file, quiet = TRUE, ...)
@@ -42,8 +46,8 @@ When passed "<filename>.ipynbmeta" it will convert "<filename>.ipynb" to "<filen
 Apart from the standard \code{\%\\VignetteIndexEntry{<name>}} and \code{\%\\VignetteEngine{<namespace>::<name>}} directives,
 it also understands:
 \enumerate{
-\item{\code{\%\\VignetteTemplate{<format>}{<filename>}}}{, which will pass a \code{--template} parameter to \code{nbconvert}}
-\item{\code{\%\\VignettePreprocessors{<format>}{<module>.<Preproc>[, ...]}}}{, which will pass \code{--<Format>Exporter.preprocessors=["<module>.<Preproc>",...]} to \code{nbconvert}.}
+\item \code{\%\\VignetteTemplate{<format>}{<filename>}}, which will pass a \code{--template} parameter to \code{nbconvert}.
+\item \code{\%\\VignettePreprocessors{<format>}{<module>.<Preproc>[, ...]}}, which will pass \code{--<Format>Exporter.preprocessors=["<module>.<Preproc>",...]} to \code{nbconvert}.
 }
 }
 \examples{
